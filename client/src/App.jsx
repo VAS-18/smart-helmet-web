@@ -3,7 +3,6 @@ import { useWebSocket } from './hooks/useWebSocket'
 import Header from './components/Header'
 import AlertBanner from './components/AlertBanner'
 import SensorCards from './components/SensorCards'
-import CameraPanel from './components/CameraPanel'
 import TelemetryChart from './components/TelemetryChart'
 import GpsVitalsPanel from './components/GpsVitalsPanel'
 import AlertLog from './components/AlertLog'
@@ -13,7 +12,7 @@ const MAX_HISTORY = 60
 
 export default function App() {
   const [telemetry, setTelemetry] = useState(null)
-  const [history, setHistory] = useState({ temp: [], hr: [], gas: [], labels: [] })
+  const [history, setHistory] = useState({ temp: [], hr: [], humidity: [], labels: [] })
   const [alertLog, setAlertLog] = useState([])
   const [topAlert, setTopAlert] = useState(null)
   const [isSimulation, setIsSimulation] = useState(false)
@@ -30,11 +29,11 @@ export default function App() {
       const labels = [...prev.labels, tick]
       const temp = [...prev.temp, d.environment?.temperature ?? null]
       const hr = [...prev.hr, d.vitals?.bpm ?? null]
-      const gas = [...prev.gas, d.gas?.mq2?.ppm ?? null]
+      const humidity = [...prev.humidity, d.environment?.humidity ?? null]
       if (labels.length > MAX_HISTORY) {
-        labels.shift(); temp.shift(); hr.shift(); gas.shift()
+        labels.shift(); temp.shift(); hr.shift(); humidity.shift()
       }
-      return { labels, temp, hr, gas }
+      return { labels, temp, hr, humidity }
     })
 
     if (d.alerts?.length > 0) {
@@ -65,7 +64,6 @@ export default function App() {
       <div className="main">
         <SensorCards telemetry={telemetry} />
         <div className="panels">
-          <CameraPanel telemetry={telemetry} />
           <TelemetryChart history={history} />
           <GpsVitalsPanel telemetry={telemetry} />
           <AlertLog alerts={alertLog} />

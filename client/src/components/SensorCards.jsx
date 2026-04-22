@@ -27,25 +27,16 @@ export default function SensorCards({ telemetry: d }) {
   const vitals = d?.vitals
   const kin = d?.kinematics
   const prox = d?.proximity
-  const vision = d?.vision
 
   const tempStatus = e ? (e.heat_index > 39 ? 'critical' : e.heat_index > 32 ? 'warning' : 'ok') : ''
-  const mq2Status = gas?.mq2 ? (gas.mq2.status === 'critical' ? 'critical' : gas.mq2.status === 'warning' ? 'warning' : 'ok') : ''
   const mq135Status = gas?.mq135 ? (gas.mq135.status === 'critical' ? 'critical' : gas.mq135.status === 'warning' ? 'warning' : 'ok') : ''
   const bpmStatus = vitals ? (vitals.bpm > 150 ? 'critical' : vitals.fatigue_level === 'severe' ? 'warning' : 'ok') : ''
   const imuStatus = kin ? (kin.fall_state !== 'normal' ? 'critical' : 'ok') : ''
   const proxStatus = prox ? (prox.status === 'critical' ? 'critical' : prox.status === 'warning' ? 'warning' : 'ok') : ''
-  const aiStatus = vision ? (vision.is_hazard ? 'critical' : 'ok') : ''
 
   const bpmBarColor = vitals
     ? (vitals.bpm > 120 ? 'var(--accent-red)' : vitals.bpm > 100 ? 'var(--accent-amber)' : 'var(--accent-pink)')
     : 'var(--accent-pink)'
-
-  const aiLabel = vision
-    ? (vision.is_hazard
-        ? `⚠ ${vision.detected_class.toUpperCase()} ${(vision.confidence * 100).toFixed(0)}%`
-        : `CLEAR ${(vision.confidence * 100).toFixed(0)}%`)
-    : '--'
 
   return (
     <div className="cards-row">
@@ -63,14 +54,6 @@ export default function SensorCards({ telemetry: d }) {
         barWidth={e ? calcBar(e.humidity, 0, 100) : 0}
         barColor="var(--accent-blue)"
         status=""
-      />
-      <SensorCard
-        label="🔥 MQ-2 Gas"
-        value={gas?.mq2 ? gas.mq2.ppm.toFixed(0) : null} unit="PPM"
-        sub={`Status: ${gas?.mq2?.status ?? '--'}`}
-        barWidth={gas?.mq2 ? calcBar(gas.mq2.ppm, 0, 800) : 0}
-        barColor="var(--accent-amber)"
-        status={mq2Status}
       />
       <SensorCard
         label="🌫 MQ-135 AQ"
@@ -100,13 +83,6 @@ export default function SensorCards({ telemetry: d }) {
         barWidth={prox ? calcBar(Math.min(prox.distance_cm, 200), 0, 200) : 0}
         barColor="var(--accent-teal)"
         status={proxStatus}
-      />
-      <SensorCard
-        label="🤖 Vision AI"
-        value={aiLabel} unit=""
-        sub={vision ? `${vision.fps} FPS | ${vision.inference_ms} ms` : '-- FPS | -- ms'}
-        valueStyle={{ fontSize: 16 }}
-        status={aiStatus}
       />
     </div>
   )
