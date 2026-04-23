@@ -99,7 +99,7 @@ body {
 }
 .sensor-card.alert-warning { border-color: rgba(245,158,11,0.5); background: var(--glow-amber); }
 .sensor-card.alert-critical { border-color: rgba(239,68,68,0.5); background: var(--glow-red); }
-.sensor-card.alert-ok { border-color: rgba(34,197,94,0.2); }
+.sensor-card.alert-ok { border-color: rgba(34,197,94,0.4); background: var(--glow-green); }
 .card-label {
   font-size: 11px; font-weight: 500; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
@@ -201,3 +201,23 @@ body {
 .vital-metric { flex: 1; min-width: 80px; }
 .vital-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
 .vital-value { font-family: var(--font-mono); font-size: 16px; font-weight: 600; }
+
+/* ── Toast Notifications ────────────────── */
+.toast-container {
+  position: fixed; top: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 1000;
+}
+.toast {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px; border-radius: var(--radius); border: 1px solid;
+  min-width: 260px; max-width: 340px; cursor: pointer;
+  animation: toast-in 0.25s ease;
+}
+.toast-critical { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+.toast-warning  { background: rgba(245,158,11,0.18); border-color: rgba(245,158,11,0.5); }
+.toast-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.toast-body { flex: 1; }
+.toast-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.toast-msg { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+@keyframes toast-in { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }

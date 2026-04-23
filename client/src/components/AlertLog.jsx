@@ -7,15 +7,24 @@ function formatAlertData(alert) {
   if (d.distance_cm) parts.push(`Dist: ${d.distance_cm} cm`)
   if (d.detected_class) parts.push(`Vision: ${d.detected_class}`)
   if (d.gps) parts.push(`GPS: ${d.gps.lat}, ${d.gps.lon}`)
-  return parts.join(' · ') || alert.type
+  return parts.join(' · ') || alert.message || alert.type
 }
 
-export default function AlertLog({ alerts }) {
+export default function AlertLog({ alerts, onClear }) {
   return (
     <div className="panel">
       <div className="panel-header">
         Alert Log
-        <span className="panel-badge">{alerts.length} alerts</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {alerts.length > 0 && (
+            <button onClick={onClear} style={{
+              fontFamily: 'var(--font-mono)', fontSize: 10, padding: '2px 8px',
+              borderRadius: 4, border: '1px solid var(--border)', background: 'transparent',
+              color: 'var(--text-muted)', cursor: 'pointer'
+            }}>Clear</button>
+          )}
+          <span className="panel-badge">{alerts.length} alerts</span>
+        </div>
       </div>
       <div className="panel-body">
         <div className="alert-log">

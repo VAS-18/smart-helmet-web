@@ -10,20 +10,18 @@ import {
 
 Chart.register(LineElement, PointElement, LinearScale, CategoryScale, Legend)
 
-function makeOptions(color) {
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { duration: 200 },
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { display: false },
-      y: {
-        grid: { color: 'rgba(255,255,255,0.04)' },
-        ticks: { color: '#4a5568', font: { size: 10 } },
-      },
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: { duration: 200 },
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { display: false },
+    y: {
+      grid: { color: 'rgba(255,255,255,0.04)' },
+      ticks: { color: '#4a5568', font: { size: 10 } },
     },
-  }
+  },
 }
 
 function MiniChart({ label, data, labels, color, badge }) {
@@ -39,7 +37,7 @@ function MiniChart({ label, data, labels, color, badge }) {
       </div>
       <div className="panel-body">
         <div className="chart-container">
-          <Line data={chartData} options={makeOptions(color)} />
+          <Line data={chartData} options={options} />
         </div>
       </div>
     </div>
